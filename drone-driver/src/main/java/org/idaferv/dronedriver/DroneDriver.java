@@ -52,7 +52,7 @@ public class DroneDriver {
 	private List<Integer> getRowIds(Integer originUrbId, int range, AdjacencyDirection adjacencyDirection) {
 		LOG.debug("Getting row urbanization ids for adjacencyDirection [{}], range [{}] and originUrbanization [{}]", adjacencyDirection, range, originUrbId);
 		List<Integer> rowIds = new ArrayList<Integer>();
-		Integer idOrigin = findOrigin(adjacencyDirection, range, originUrbId);
+		Integer idOrigin = findOrigin(originUrbId, range, adjacencyDirection);
 		Integer idLeft = idOrigin;
 		Integer idRight = idOrigin;
 		rowIds.add(idOrigin);
@@ -66,14 +66,14 @@ public class DroneDriver {
 		return rowIds;
 	}
 	
-	private List<Integer> getColumnIds(Integer urbOriginid, int rango, AdjacencyDirection adjacencyDirection) {
-		LOG.debug("Getting column urbanization ids for adjacencyDirection [{}], range [{}] and originUrbanization [{}]",adjacencyDirection, rango, urbOriginid);
+	private List<Integer> getColumnIds(Integer originUrbId, int range, AdjacencyDirection adjacencyDirection) {
+		LOG.debug("Getting column urbanization ids for adjacencyDirection [{}], range [{}] and originUrbanization [{}]",adjacencyDirection, range, originUrbId);
 		List<Integer> columnIds = new ArrayList<Integer>();
-		Integer idOrigin = findOrigin(adjacencyDirection, rango, urbOriginid);
+		Integer idOrigin = findOrigin(originUrbId, range, adjacencyDirection);
 		Integer idUp = idOrigin;
 		Integer idDown = idOrigin;
 		columnIds.add(idOrigin);
-		for (int i=1;i<rango;i++) {
+		for (int i=1;i<range;i++) {
 			idDown = auxDriver.getAdjacentUrbanization(idDown, AdjacencyDirection.UP);
 			columnIds.add(idDown);
 			idUp = auxDriver.getAdjacentUrbanization(idUp, AdjacencyDirection.DOWN);
@@ -84,10 +84,10 @@ public class DroneDriver {
 		
 	}
 
-	private Integer findOrigin(AdjacencyDirection adjacencyDirection, int rango, Integer urbOriginid) {
-		LOG.debug("Finding origin for adjacencyDirection [{}], range [{}] and originUrbanization [{}]", adjacencyDirection, rango, urbOriginid);
-		Integer originId = urbOriginid;
-		for (int i=1;i<=rango;i++) {
+	private Integer findOrigin(Integer originUrbId, int range, AdjacencyDirection adjacencyDirection) {
+		LOG.debug("Finding origin for adjacencyDirection [{}], range [{}] and originUrbanization [{}]", adjacencyDirection, range, originUrbId);
+		Integer originId = originUrbId;
+		for (int i=1;i<=range;i++) {
 			originId = auxDriver.getAdjacentUrbanization(originId, adjacencyDirection);
 		}
 		LOG.debug("Origin urbanization found: {}", originId);
