@@ -1,5 +1,8 @@
 package org.idaferv.dronedriver;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class AuxiliarDroneDriver {
 	
 	public Integer getUrbanizationId(double xCoordinate, double yCoordinate) {	
