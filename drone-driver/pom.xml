@@ -4,7 +4,7 @@
 	<groupId>org.idaferv</groupId>
 	<artifactId>drone-driver</artifactId>
 	<packaging>war</packaging>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>drone-driver</name>
 
 	<properties>
