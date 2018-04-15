@@ -2,28 +2,40 @@ package org.idaferv.dronedriver;
 
 import org.springframework.stereotype.Service;
 
+/**
+ * Auxiliar drone driver service.
+ * 
+ * The only reason to be separated from DroneDrive is to leave in DroneDriver
+ * the function getUrbanizations alone which is the goal of the exercise.
+ * 
+ * It contains the functions supposed to be already developed.
+ * 
+ * @author idaferv
+ *
+ */
+
 @Service
 public class AuxiliarDroneDriver {
-	
-	public Integer getUrbanizationId(double xCoordinate, double yCoordinate) {	
+
+	public Integer getUrbanizationId(double xCoordinate, double yCoordinate) {
 		// Only valid for ranges 1 and 2
 		return 13;
 	}
-	
+
 	public Integer getAdjacentUrbanization(Integer originUrbanizationId, AdjacencyDirection adjacencyDirection) {
-		
+
 		// Only valid for ranges 1 and 2
-		// De primeras es irrelevante el valor de identificadorUrbanizaciónOrigen porque siempre va a ser 13
+		// returning an Integer for simplicity
 		switch (adjacencyDirection) {
-			case UP : 
+			case UP:
 				return originUrbanizationId + 5;
-			case DOWN :
+			case DOWN:
 				return originUrbanizationId - 5;
-			case RIGHT :
+			case RIGHT:
 				return originUrbanizationId + 1;
-			case LEFT :
+			case LEFT:
 				return originUrbanizationId - 1;
-			default :
+			default:
 				return null;
 		}
 	}

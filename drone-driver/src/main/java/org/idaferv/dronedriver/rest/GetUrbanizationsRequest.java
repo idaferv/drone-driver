@@ -1,5 +1,11 @@
 package org.idaferv.dronedriver.rest;
 
+/**
+ * REST service request.
+ * 
+ * @author idaferv
+ *
+ */
 public class GetUrbanizationsRequest {
 	
 	private double xCoordinate;

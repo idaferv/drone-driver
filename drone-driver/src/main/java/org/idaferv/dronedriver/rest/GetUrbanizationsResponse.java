@@ -5,6 +5,12 @@ import java.util.List;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+/**
+ * REST service response.
+ * 
+ * @author idaferv
+ *
+ */
 @Component
 @Scope("prototype")
 public class GetUrbanizationsResponse {

@@ -11,14 +11,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * REST Service that provide access to getUrbanizations function from
+ * DroneDriver.
+ * 
+ * @author idaferv
+ *
+ */
 @RestController
 public class DroneDriverRestController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(DroneDriverRestController.class);
-	
+
 	@Autowired
 	private DroneDriver droneDriver;
-	
+
 	@Autowired
 	private GetUrbanizationsResponse getUrbanizationsResponse;
 
@@ -28,12 +35,12 @@ public class DroneDriverRestController {
 		LOG.info(
 				"Request received at getUrbanizations. Input parameters are: xCoordinate [{}], yCoordinate [{}] and range [{}]",
 				input.getxCoordinate(), input.getyCoordinate(), input.getRange());
-		
-		List<Integer> urbanizations = droneDriver.getUrbanizations(input.getxCoordinate(), input.getyCoordinate(), input.getRange());
+
+		List<Integer> urbanizations = droneDriver.getUrbanizations(input.getxCoordinate(), input.getyCoordinate(),
+				input.getRange());
 		getUrbanizationsResponse.setUrbanizations(urbanizations);
-		
-		LOG.info(
-				"Response to request received at getUrbanizations is: {}", getUrbanizationsResponse);
+
+		LOG.info("Response to request received at getUrbanizations is: {}", getUrbanizationsResponse);
 
 		return getUrbanizationsResponse;
 	}
