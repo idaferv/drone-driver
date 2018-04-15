@@ -25,23 +25,19 @@ public class DroneDriver {
 		Integer originUrbId = auxDriver.getUrbanizationId(xCoordinate, yCoordinate);
 		LOG.debug("UrbanizationId for given coordinates: {}", originUrbId);
 		
-		urbanizations.add(originUrbId);
+		// Adding main row urbanization ids.
+		List<Integer> originRow = getRowIds(originUrbId, range);
+		urbanizations.addAll(originRow);
 		
-		List<Integer> upRowUrbIds = getRowIds(originUrbId, range, AdjacencyDirection.UP);
-		LOG.debug("Up row urbanization ids: {}", upRowUrbIds);
-		urbanizations.addAll(upRowUrbIds);
-		
-		List<Integer> downRowIds = getRowIds(originUrbId, range, AdjacencyDirection.DOWN);
-		LOG.debug("Down row urbanization ids: {}", downRowIds);
-		urbanizations.addAll(downRowIds);
-		
-		List<Integer> leftColumnIds = getColumnIds(originUrbId, range, AdjacencyDirection.LEFT);
-		LOG.debug("Left column urbanization ids: {}", leftColumnIds);
-		urbanizations.addAll(leftColumnIds);
-		
-		List<Integer> rightColumnIds = getColumnIds(originUrbId, range, AdjacencyDirection.RIGHT);
-		LOG.debug("Right column urbanization ids: {}", rightColumnIds);
-		urbanizations.addAll(rightColumnIds);
+		// Adding up and down rows
+		Integer originIdUp = originUrbId;
+		Integer originIdDown = originUrbId;
+		for (int i=1;i<=range;i++) {
+			originIdUp = auxDriver.getAdjacentUrbanization(originIdUp, AdjacencyDirection.UP);
+			urbanizations.addAll(getRowIds(originIdUp, range));
+			originIdDown = auxDriver.getAdjacentUrbanization(originIdDown, AdjacencyDirection.DOWN);
+			urbanizations.addAll(getRowIds(originIdDown, range));		
+		}
 		
 		Collections.sort(urbanizations);
 		
@@ -49,50 +45,21 @@ public class DroneDriver {
 		return urbanizations;
 	}
 
-	private List<Integer> getRowIds(Integer originUrbId, int range, AdjacencyDirection adjacencyDirection) {
-		LOG.debug("Getting row urbanization ids for adjacencyDirection [{}], range [{}] and originUrbanization [{}]", adjacencyDirection, range, originUrbId);
+	private List<Integer> getRowIds(Integer originUrbId, int range) {
+		LOG.debug("Getting row urbanization ids for originUrbanization [{}] and range [{}]",originUrbId, range);
 		List<Integer> rowIds = new ArrayList<Integer>();
-		Integer idOrigin = findOrigin(originUrbId, range, adjacencyDirection);
-		Integer idLeft = idOrigin;
-		Integer idRight = idOrigin;
-		rowIds.add(idOrigin);
+		rowIds.add(originUrbId);
+		Integer idLeft = originUrbId;
+		Integer idRight = originUrbId;
 		for (int i=1;i<=range;i++) {
 			idRight = auxDriver.getAdjacentUrbanization(idRight, AdjacencyDirection.RIGHT);
 			rowIds.add(idRight);
 			idLeft = auxDriver.getAdjacentUrbanization(idLeft, AdjacencyDirection.LEFT);
 			rowIds.add(idLeft);
 		}
+		Collections.sort(rowIds);
 		LOG.debug("Row urbanization ids: {}", rowIds);
 		return rowIds;
 	}
-	
-	private List<Integer> getColumnIds(Integer originUrbId, int range, AdjacencyDirection adjacencyDirection) {
-		LOG.debug("Getting column urbanization ids for adjacencyDirection [{}], range [{}] and originUrbanization [{}]",adjacencyDirection, range, originUrbId);
-		List<Integer> columnIds = new ArrayList<Integer>();
-		Integer idOrigin = findOrigin(originUrbId, range, adjacencyDirection);
-		Integer idUp = idOrigin;
-		Integer idDown = idOrigin;
-		columnIds.add(idOrigin);
-		for (int i=1;i<range;i++) {
-			idDown = auxDriver.getAdjacentUrbanization(idDown, AdjacencyDirection.UP);
-			columnIds.add(idDown);
-			idUp = auxDriver.getAdjacentUrbanization(idUp, AdjacencyDirection.DOWN);
-			columnIds.add(idUp);
-		}
-		LOG.debug("Column urbanization ids: {}", columnIds);
-		return columnIds;
-		
-	}
-
-	private Integer findOrigin(Integer originUrbId, int range, AdjacencyDirection adjacencyDirection) {
-		LOG.debug("Finding origin for adjacencyDirection [{}], range [{}] and originUrbanization [{}]", adjacencyDirection, range, originUrbId);
-		Integer originId = originUrbId;
-		for (int i=1;i<=range;i++) {
-			originId = auxDriver.getAdjacentUrbanization(originId, adjacencyDirection);
-		}
-		LOG.debug("Origin urbanization found: {}", originId);
-		return originId;
-	}
-
 
 }
